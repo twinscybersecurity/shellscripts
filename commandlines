@@ -1,0 +1,27 @@
+Top IPs per request, showing the number of requests and in decreasing order of the number of requests.
+cat file.log | awk '{print $1}' | sort | uniq -c | sort -r
+
+Identifying total successful connections.
+cat file.log |grep 'HTTP/1.1" 200' | awk '{print $9}' | sort | uniq -c
+
+Identifying total unsuccessful connections.
+cat file.log |grep 'HTTP/1.1" 404' | awk '{print $9}' | sort | uniq -c
+
+Saving the result in the variable.
+var=$(cat log.log |grep 'HTTP/1.1" 200' | awk '{print $9}' | sort | uniq -c)
+
+Looking for a process e killing him.
+netstat -anp | grep :3333 | awk '{print $7}' | awk -F '[/]' '{print $1}' | xarg kill -9
+
+Looking for a process with 6 caracters.
+netstat -anp | awk '{print $7} | awk '/[A-Za-z]{6}'
+ps aux | grep -E [A-Za-z]{6}
+
+Looking for a process in Windows.
+netstat -an | findstr /r '/[A-Za-z]{6}'
+
+Replacing words in the text.
+sed -i 's/oldword/newword/g'  file.txt
+
+Backup Website Page.
+var="$(md5sum indexbkp.html | cut -d " " -f1)"; while :; do var2="$(md5sum index.html 2>/dev/null | cut -d " " -f1)"; sleep 0.3; if [ "$var" != "$var2" ]; then cp indexbkp.html index.html; fi; done &
